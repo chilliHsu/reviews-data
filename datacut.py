@@ -39,12 +39,22 @@ def getAllFile():
 	
 	return csvfile
 
+def getStopWord():
+	stopWords=[]
+	with open('./stopword/stopWords.txt', 'r', encoding='UTF-8') as file:
+		for data in file.readlines():
+			data = data.strip()
+			stopWords.append(data)
+	return stopWords
+
 positiveW = []
 positiveCount = []
 negativeW = []
 negativeCount = []
+jieba.set_dictionary('./dictionary/dict.txt.big.txt') #繁體中文
 
 gamefiles = getAllFile()
+stopWords = getStopWord()
 
 for game in gamefiles:
 	name = game
@@ -59,7 +69,7 @@ for game in gamefiles:
 		if scores[index] == 5:
 			for word in seg_list:
 				#print(i)
-				if len(word) > 1:
+				if word not in stopWords and len(word)>1:
 					if word not in positiveW :
 						positiveW.append(word)
 						positiveCount.append(1)
@@ -68,7 +78,7 @@ for game in gamefiles:
 						positiveCount[pos]+=1
 		elif scores[index] == 1:
 			for word in seg_list:
-				if len(word) > 1:
+				if word not in stopWords and len(word)>1:
 					if word not in negativeW :
 						negativeW.append(word)
 						negativeCount.append(1)
