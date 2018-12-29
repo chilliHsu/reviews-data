@@ -11,10 +11,12 @@ jeiba的code叫做datacut.py
 ----------------------
 文字雲 
 http://stacepsho.blogspot.com/2018/06/word-cloud-in-python.html
+
 https://blog.csdn.net/wireless_com/article/details/60571394
 (但我還沒寫，懶)
 
 -------------------
 jieba : 關於繁體中文、idf 相關參考資料
 https://coderwall.com/p/38wtgw/jieba
+
 https://github.com/tomlinNTUB/Python-in-5-days
