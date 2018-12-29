@@ -1,6 +1,7 @@
 import jieba
 import pandas as pd
 import os
+import re
 
 #獲得該app的評論、日期、跟分數
 def getData(name):
@@ -18,6 +19,7 @@ def save_excel(words,count,label):
 	save_df.to_excel(writer,label) #將csv檔存在review-data資料夾中
 
 def getAllFile():
+	
 	path='./'
 	files = os.listdir(path)
 	csvfile = []
@@ -25,6 +27,8 @@ def getAllFile():
 		if file[-4:] == '.csv':
 			print(file[:-4])
 			csvfile.append(file[:-4])
+	
+	#csvfile = ['com.playrix.homescapes']
 	return csvfile
 
 positiveW = []
@@ -38,8 +42,11 @@ for game in gamefiles:
 	name = game
 	#print(game)
 	reviews,scores,dates = getData(name)
+	#print(reviews)
 
 	for index in range(len(scores)):
+		reviews[index] = re.sub(r'[^\u4e00-\u9fa5]',' ',str(reviews[index]))
+		#print(reviews[index])
 		seg_list = jieba.cut(reviews[index])
 		if scores[index] == 5:
 			for word in seg_list:
