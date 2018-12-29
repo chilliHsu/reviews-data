@@ -16,6 +16,7 @@ def getData(name):
 def save_excel(words,count,label):
 	dict = {"word list " : words,"frequency":count} #save relevant data into dataframe
 	save_df = pd.DataFrame(dict)
+	save_df = save_df.sort_values(by='frequency',ascending=False)
 	save_df.to_excel(writer,label) #將csv檔存在review-data資料夾中
 
 def getAllFile():
