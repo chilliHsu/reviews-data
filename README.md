@@ -9,3 +9,7 @@ jeiba下來的資料都放在jiebaword裡面，裡面包括 positive,negative �
 jeiba的code叫做datacut.py 
 
 ----------------------
+文字雲 
+http://stacepsho.blogspot.com/2018/06/word-cloud-in-python.html
+https://blog.csdn.net/wireless_com/article/details/60571394
+(但我還沒寫，懶)
