@@ -24,12 +24,19 @@ def getAllFile():
 	path='./'
 	files = os.listdir(path)
 	csvfile = []
+
+	alreadyfiles = os.listdir('./jiebaword/')
+
+	
 	for file in files:
 		if file[-4:] == '.csv':
-			print(file[:-4])
-			csvfile.append(file[:-4])
+			#print(file[:-4])
+			if file[:-4]+'.xls' not in alreadyfiles:
+				print(file)
+				csvfile.append(file[:-4])
 	
 	#csvfile = ['com.playrix.homescapes']
+	
 	return csvfile
 
 positiveW = []
