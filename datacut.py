@@ -1,10 +1,10 @@
 import jieba
 import pandas as pd
+import os
 
 #獲得該app的評論、日期、跟分數
-def getData():
-	name = 'com.yilegame.mshztw.android.csv'
-	df = pd.read_csv(name)
+def getData(name):
+	df = pd.read_csv(name+'.csv')
 
 	reviews = df['reviews']
 	scores = df['Score']
@@ -12,25 +12,66 @@ def getData():
 
 	return reviews,scores,dates
 
+def save_excel(words,count,label):
+	dict = {"word list " : words,"frequency":count} #save relevant data into dataframe
+	save_df = pd.DataFrame(dict)
+	save_df.to_excel(writer,label) #將csv檔存在review-data資料夾中
+
+def getAllFile():
+	path='./'
+	files = os.listdir(path)
+	csvfile = []
+	for file in files:
+		if file[-4:] == '.csv':
+			print(file[:-4])
+			csvfile.append(file[:-4])
+	return csvfile
+
 positiveW = []
-nagativeW = []
+positiveCount = []
+negativeW = []
+negativeCount = []
 
-reviews,scores,dates = getData()
-for index in range(len(scores)):
-	seg_list = jieba.cut(reviews[index])
-	if scores[index] == 5:
-		for word in seg_list:
-			#print(i)
-			if word not in positiveW and len(word) > 1:
-				positiveW.append(word)
-	elif scores[index] == 1:
-		for word in seg_list:
-			if word not in nagativeW and len(word) > 1:
-				nagativeW.append(word)
+gamefiles = getAllFile()
 
+for game in gamefiles:
+	name = game
+	#print(game)
+	reviews,scores,dates = getData(name)
+
+	for index in range(len(scores)):
+		seg_list = jieba.cut(reviews[index])
+		if scores[index] == 5:
+			for word in seg_list:
+				#print(i)
+				if len(word) > 1:
+					if word not in positiveW :
+						positiveW.append(word)
+						positiveCount.append(1)
+					else:
+						pos = positiveW.index(word)
+						positiveCount[pos]+=1
+		elif scores[index] == 1:
+			for word in seg_list:
+				if len(word) > 1:
+					if word not in negativeW :
+						negativeW.append(word)
+						negativeCount.append(1)
+					else: 
+						pos = negativeW.index(word)
+						negativeCount[pos]+=1
+
+	writer = pd.ExcelWriter('./jiebaword/'+name+'.xls')
+	save_excel(positiveW,positiveCount,"positive")
+	save_excel(negativeW,negativeCount,"negative")
+	writer.save()
+	print(name,"ok!!")
+
+"""
 print("positiveword",positiveW)
 print("-----------------------------------------------------")
-print("nagativeword",nagativeW)
+print("nagativeword",negativeW)
+"""
 
 
 	
