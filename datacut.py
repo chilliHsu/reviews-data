@@ -89,9 +89,9 @@ def main():
 							negativeCount[pos]+=1
 
 		# 這裡就是可以叫出第一款game的文字雲的地方0w0
-		# if first:
-		# 	WordCloud(positiveCount, positiveW)
-		# 	first = False
+		if first:
+			WordCloud(positiveCount, positiveW)
+			first = False
 
 		writer = pd.ExcelWriter('./jiebaword/'+name+'.xls')
 		save_excel(positiveW,positiveCount,"positive",writer)
@@ -112,11 +112,17 @@ def WordCloud(word_counts, words):
 	cloud_term = " "
 	for i in words:
 		cloud_term = cloud_term + i + " "
+		#print(cloud_term)
 
 	# 微軟正黑體
 	font = r'msjh.ttc'
 	my_wordcloud = WordCloud(background_color="white", font_path=font, collocations=False, width=2400, height=2400, margin=2)  
-	my_wordcloud.generate(cloud_term)
+	word_dic={}
+	for num in range(len(words)):
+		word_dic[words[num]] = word_counts[num]
+	
+	#print(dict)
+	my_wordcloud.generate_from_frequencies(frequencies=word_dic)
 
 	plt.imshow(my_wordcloud)
 	plt.axis("off")
