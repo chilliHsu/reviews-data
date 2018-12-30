@@ -13,21 +13,20 @@ def getData(name):
 
 	return reviews,scores,dates
 
-def save_excel(words,count,label):
+def save_excel(words,count,label,writer):
 	dict = {"word list " : words,"frequency":count} #save relevant data into dataframe
 	save_df = pd.DataFrame(dict)
 	save_df = save_df.sort_values(by='frequency',ascending=False)
 	save_df.to_excel(writer,label) #將csv檔存在review-data資料夾中
 
 def getAllFile():
-	
+
 	path='./'
 	files = os.listdir(path)
 	csvfile = []
 
 	alreadyfiles = os.listdir('./jiebaword/')
 
-	
 	for file in files:
 		if file[-4:] == '.csv':
 			# print(file[:-4])
@@ -35,6 +34,7 @@ def getAllFile():
 				print(file)
 				csvfile.append(file[:-4])
 	
+	# 這只是測試用
 	# csvfile = ['com.playrix.homescapes']
 	
 	return csvfile
@@ -52,6 +52,7 @@ def main():
 
 	gamefiles = getAllFile()
 	stopWords = getStopWord()
+	first = True
 
 	for game in gamefiles:
 		positiveW = []
@@ -87,15 +88,39 @@ def main():
 							pos = negativeW.index(word)
 							negativeCount[pos]+=1
 
+		# 這裡就是可以叫出第一款game的文字雲的地方0w0
+		# if first:
+		# 	WordCloud(positiveCount, positiveW)
+		# 	first = False
+
 		writer = pd.ExcelWriter('./jiebaword/'+name+'.xls')
-		save_excel(positiveW,positiveCount,"positive")
-		save_excel(negativeW,negativeCount,"negative")
+		save_excel(positiveW,positiveCount,"positive",writer)
+		save_excel(negativeW,negativeCount,"negative",writer)
 		writer.save()
 		print(name,"ok!!")
 
 	# print("positiveword",positiveW)
 	# print("-----------------------------------------------------")
 	# print("nagativeword",negativeW)
+
+def WordCloud(word_counts, words):
+	# print(words)
+	import matplotlib.pyplot as plt 
+	from wordcloud import WordCloud 
+
+	# 參考曼軒的，my_wordcloud.generate()的input必須是一整個string
+	cloud_term = " "
+	for i in words:
+		cloud_term = cloud_term + i + " "
+
+	# 微軟正黑體
+	font = r'msjh.ttc'
+	my_wordcloud = WordCloud(background_color="white", font_path=font, collocations=False, width=2400, height=2400, margin=2)  
+	my_wordcloud.generate(cloud_term)
+
+	plt.imshow(my_wordcloud)
+	plt.axis("off")
+	plt.show()
 
 if __name__ == '__main__':
     main()
