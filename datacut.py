@@ -30,12 +30,12 @@ def getAllFile():
 	
 	for file in files:
 		if file[-4:] == '.csv':
-			#print(file[:-4])
+			# print(file[:-4])
 			if file[:-4]+'.xls' not in alreadyfiles:
 				print(file)
 				csvfile.append(file[:-4])
 	
-	#csvfile = ['com.playrix.homescapes']
+	# csvfile = ['com.playrix.homescapes']
 	
 	return csvfile
 
@@ -47,20 +47,21 @@ def getStopWord():
 			stopWords.append(data)
 	return stopWords
 
-positiveW = []
-positiveCount = []
-negativeW = []
-negativeCount = []
+
 jieba.set_dictionary('./dictionary/dict.txt.big.txt') #繁體中文
 
 gamefiles = getAllFile()
 stopWords = getStopWord()
 
 for game in gamefiles:
+	positiveW = []
+	positiveCount = []
+	negativeW = []
+	negativeCount = []
 	name = game
-	#print(game)
+	print(game)
 	reviews,scores,dates = getData(name)
-	#print(reviews)
+	# print(reviews)
 
 	for index in range(len(scores)):
 		reviews[index] = re.sub(r'[^\u4e00-\u9fa5]',' ',str(reviews[index]))
@@ -92,11 +93,11 @@ for game in gamefiles:
 	writer.save()
 	print(name,"ok!!")
 
-"""
+
 print("positiveword",positiveW)
 print("-----------------------------------------------------")
 print("nagativeword",negativeW)
-"""
+
 
 
 	
